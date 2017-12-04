@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <deque>
 
 static const int N = 20;
 
@@ -9,31 +10,29 @@ char a[N][N];
 
 int area(int n, int row, int col) {
     int count = 0;
-    int r[100], c[100];
-    int k = 0;
-    r[0] = row; c[0] = col; k++;
+    deque<int> r;
+    deque<int> c;
+
+    r.push_back(row); c.push_back(col);
     a[row][col] = '*';
-    while (k>0) {
-        k--; count++;
-        int rx = r[k], cx = c[k];
+    while (!r.empty()) {
+        count++;
+        int rx = r.front(), cx = c.front();
+        r.pop_front(); c.pop_front();
         if (a[rx-1][cx]=='.') {
-            k++;
-            r[k]=rx-1; c[k]=cx;
+            r.push_back(rx-1); c.push_back(cx);
             a[rx-1][cx]='*';
         }
         if (a[rx+1][cx]=='.') {
-            k++;
-            r[k]=rx+1; c[k]=cx;
+            r.push_back(rx+1); c.push_back(cx);
             a[rx+1][cx]='*';
         }
         if (a[rx][cx+1]=='.') {
-            k++;
-            r[k]=rx; c[k]=cx+1;
+            r.push_back(rx); c.push_back(cx+1);
             a[rx][cx+1]='*';
         }
         if (a[rx][cx-1]=='.') {
-            k++;
-            r[k]=rx; c[k]=cx-1;
+            r.push_back(rx); c.push_back(cx-1);
             a[rx][cx-1]='*';
         }
     }
